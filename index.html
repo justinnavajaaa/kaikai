@@ -127,6 +127,33 @@
       100% { transform: translateY(-10vh); opacity: 0; }
     }
 
+    /* BLEEH word effect */
+    .bleeh-word {
+      position: fixed;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 0 8px #ff4da6, 0 0 15px #ff99cc;
+      pointer-events: none;
+      animation: bleehPop 0.7s ease-out forwards;
+      z-index: 1000;
+    }
+
+    @keyframes bleehPop {
+      0% {
+        transform: translate(-50%, -50%) scale(0.4);
+        opacity: 0;
+      }
+      40% {
+        transform: translate(-50%, -80%) scale(1.1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -130%) scale(0.9);
+        opacity: 0;
+      }
+    }
+
     /* Bouquet Scene */
     #bouquetScene {
       position: fixed;
@@ -291,9 +318,15 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
   <script>
-    // Wrap everything so we only run after DOM & EmailJS are available
     (function () {
       const HEART_EMOJIS = ["💖", "💕", "💘", "💝"];
+      const NO_PHRASES = [
+        "NO WAY!",
+        "BLEH",
+        "HINDI PWEDE ATE HEHE",
+        "TOO SLOW!",
+        "ONE MORE!"
+      ];
 
       const noBtn = document.getElementById("noBtn");
       const yesBtn = document.getElementById("yesBtn");
@@ -345,6 +378,22 @@
         setTimeout(() => {
           emoji.remove();
         }, 3000);
+      }
+
+      function showBleehEffect() {
+        const rect = noBtn.getBoundingClientRect();
+        const bleeh = document.createElement("div");
+        bleeh.classList.add("bleeh-word");
+        bleeh.textContent = "BLEEH";
+
+        bleeh.style.left = rect.left + rect.width / 2 + "px";
+        bleeh.style.top = rect.top + rect.height / 2 + "px";
+
+        document.body.appendChild(bleeh);
+
+        setTimeout(() => {
+          bleeh.remove();
+        }, 800);
       }
 
       function createFloatingHeart() {
@@ -425,15 +474,22 @@
 
       // Events
       noBtn.addEventListener("mouseenter", () => {
+        // change text to a random phrase
+        const phrase = NO_PHRASES[Math.floor(Math.random() * NO_PHRASES.length)];
+        noBtn.textContent = phrase;
+
+        // original playful behavior
         moveNoButton();
         showEmojiFar();
+
+        // BLEEH word effect
+        showBleehEffect();
       });
 
       // Position the "No" button once at start
       window.addEventListener("load", moveNoButton);
 
       yesBtn.addEventListener("click", () => {
-        // Soften the transition: fade out main, then show bouquet
         document.body.style.transition = "opacity 1s";
         document.body.style.opacity = "0";
 
