@@ -20,12 +20,17 @@
       --font-playful: "Comic Sans MS", "Comic Neue", cursive;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       min-height: 100vh;
       overflow: hidden;
       font-family: var(--font-playful);
+
       background-image:
         linear-gradient(-45deg, var(--pink-1), var(--pink-2), var(--pink-3), var(--pink-4)),
         url("kirig.jpeg");
@@ -35,6 +40,7 @@
       background-attachment: fixed;
       animation: gradientMove 12s ease infinite;
       background-blend-mode: soft-light;
+
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -52,25 +58,19 @@
 
     h1 {
       margin-top: 40px;
-      font-size: clamp(2.6rem, 6vw, 3.4rem);
-      font-weight: 900;
-      letter-spacing: 1px;
-      text-shadow:
-        0 0 10px #ffffff,
-        0 0 25px #ff66b2,
-        0 0 45px #ff1a75;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      text-shadow: var(--text-shadow-strong);
     }
 
     .buttons {
       margin-top: 48px;
       position: relative;
-      width: min(420px, 100%);
-      height: 260px;
+      width: min(400px, 100%);
+      height: 220px;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 20px;
-      overflow: visible;
+      gap: 16px;
     }
 
     #yesBtn,
@@ -78,45 +78,26 @@
       border: none;
       cursor: pointer;
       font-family: var(--font-main);
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      transition:
-        box-shadow var(--transition-fast),
-        background var(--transition-fast),
-        color var(--transition-fast),
-        transform var(--transition-fast),
-        padding var(--transition-fast),
-        font-size var(--transition-fast),
-        border-radius var(--transition-fast);
+      font-weight: 600;
+      transition: box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
     }
 
-    /* Big YES by default; will get HUGE on clicks */
     #yesBtn {
-      padding: 26px 80px;
-      font-size: 1.5rem;
-      border-radius: 999px;
+      padding: 18px 40px;
+      font-size: 1.1rem;
+      border-radius: 40px;
       background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
       color: #fff;
-      box-shadow:
-        0 0 25px #ff66b2,
-        0 0 50px rgba(255, 102, 178, 0.7);
+      box-shadow: 0 0 25px #ff66b2;
       transform-origin: center;
-      border: 3px solid #ffffff;
-      text-shadow: 0 0 5px #ff4da6, 0 0 10px #ff99cc;
-      max-width: 100%;
-      word-break: keep-all;
-      white-space: nowrap;
     }
 
     #yesBtn:hover {
-      box-shadow:
-        0 0 40px #ff66b2,
-        0 0 70px rgba(255, 153, 204, 0.9);
+      box-shadow: 0 0 35px #ff66b2;
     }
 
     #noBtn {
-      padding: 12px 26px;
+      padding: 10px 22px;
       font-size: 0.95rem;
       border-radius: 30px;
       background: #fff;
@@ -156,7 +137,7 @@
     .bleeh-word {
       position: fixed;
       font-size: 1.2rem;
-      font-weight: 900;
+      font-weight: 700;
       color: #ffffff;
       text-shadow: 0 0 8px #ff4da6, 0 0 15px #ff99cc;
       pointer-events: none;
@@ -165,20 +146,24 @@
     }
 
     @keyframes bleehPop {
-      0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
-      40% { transform: translate(-50%, -80%) scale(1.1); opacity: 1; }
-      100% { transform: translate(-50%, -130%) scale(0.9); opacity: 0; }
+      0% {
+        transform: translate(-50%, -50%) scale(0.4);
+        opacity: 0;
+      }
+      40% {
+        transform: translate(-50%, -80%) scale(1.1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -130%) scale(0.9);
+        opacity: 0;
+      }
     }
 
     .are-you-sure {
-      margin-top: 10px;
-      font-size: 1.2rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      text-shadow:
-        0 0 8px #000,
-        0 0 16px #ff99cc;
+      margin-top: 8px;
+      font-size: 1rem;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       min-height: 1.4em;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -279,7 +264,9 @@
       height: 40px;
       border-radius: 40px 40px 16px 16px;
       background: radial-gradient(circle at 30% 10%, #ffe5f6, #ff4da6 55%, #a80056 100%);
-      box-shadow: 0 0 14px rgba(255, 121, 188, 0.7), 0 0 24px rgba(255, 121, 188, 0.5);
+      box-shadow:
+        0 0 14px rgba(255, 121, 188, 0.7),
+        0 0 24px rgba(255, 121, 188, 0.5);
     }
 
     .tulip-bulb::before,
@@ -350,7 +337,10 @@
       position: absolute;
       font-size: 1rem;
       color: #ffe8a3;
-      text-shadow: 0 0 10px #fff8c2, 0 0 18px #ffd15b, 0 0 24px #ff9e2c;
+      text-shadow:
+        0 0 10px #fff8c2,
+        0 0 18px #ffd15b,
+        0 0 24px #ff9e2c;
       pointer-events: none;
       animation: starFall 4s linear infinite;
     }
@@ -404,7 +394,6 @@
       font-size: 0.95rem;
       outline: none;
       box-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
-      font-weight: 600;
     }
 
     textarea:focus {
@@ -419,10 +408,8 @@
       background: #fff;
       color: var(--accent-1);
       cursor: pointer;
-      font-weight: 800;
-      letter-spacing: 0.05em;
+      font-weight: bold;
       font-family: var(--font-main);
-      text-transform: uppercase;
       transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
     }
 
@@ -460,20 +447,69 @@
       100% { transform: translateY(-10vh); opacity: 0; }
     }
 
+    /* YouTube music box at bottom */
+    .music-box {
+      position: fixed;
+      left: 50%;
+      bottom: 8px;
+      transform: translateX(-50%);
+      width: 340px;
+      max-width: 95vw;
+      background: rgba(0, 0, 0, 0.75);
+      border-radius: 12px;
+      padding: 6px 8px 10px;
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.8);
+      display: none;
+      z-index: 9999;
+    }
+
+    .music-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+
+    .music-box-title {
+      font-weight: 600;
+    }
+
+    .music-box-close {
+      border: none;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .music-box iframe {
+      width: 100%;
+      height: 190px;
+      border: none;
+      border-radius: 8px;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
       }
+
       .loading-bar {
         animation-duration: 0.001ms !important;
       }
     }
 
     @media (max-width: 480px) {
-      .buttons { height: 220px; }
-      #yesBtn { padding-inline: 40px; }
+      .buttons {
+        height: 200px;
+      }
+
+      #yesBtn {
+        padding-inline: 28px;
+      }
     }
   </style>
 </head>
@@ -489,6 +525,7 @@
     <p id="areYouSureText" class="are-you-sure"></p>
   </main>
 
+  <!-- Tulip loading scene (15s) -->
   <section id="tulipScene" class="scene" aria-hidden="true">
     <div class="tulip-field" aria-hidden="true">
       <div class="tulip-3d">
@@ -537,6 +574,7 @@
     </div>
   </section>
 
+  <!-- Final message / bouquet scene -->
   <section id="bouquetScene" class="scene" aria-hidden="true">
     <div class="bouquet" aria-hidden="true">💐🌹💖</div>
     <p class="romantic-text">
@@ -552,25 +590,41 @@
       ></textarea>
       <button class="submit-btn" id="sendBtn" type="button">Send 💖</button>
 
-      <button class="submit-btn" id="loverBtn" type="button">
-        Play "Lover" 🎵
+      <!-- New: button to show random Taylor Swift YouTube box -->
+      <button class="submit-btn" id="songLinkBtn" type="button">
+        Play a Taylor Swift song 🎵
       </button>
 
       <div class="love-message" id="displayMessage" aria-live="polite"></div>
     </div>
   </section>
 
-  <audio id="loverAudio" src="lover.mp3"></audio>
+  <!-- Small YouTube music box at bottom -->
+  <div class="music-box" id="musicBox">
+    <div class="music-box-header">
+      <span class="music-box-title">Your surprise song 💿</span>
+      <button class="music-box-close" id="musicBoxClose" aria-label="Close music">✕</button>
+    </div>
+    <iframe
+      id="musicIframe"
+      src=""
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      title="Valentine music"
+    ></iframe>
+  </div>
 
+  <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
   <script>
     (function () {
+      // EmailJS configuration (your values)
       const EMAILJS_PUBLIC_KEY = "Jsq8y9n9irXxy36f-";
       const EMAILJS_SERVICE_ID = "service_vi9ffxq";
-      const EMAILJS_TEMPLATE_ID = "template_xzyvp0c";
+      const EMAILJS_TEMPLATE_ID = "template_xzyvp0c"; // variable "mahiwagangmensahe"
 
-      const HEART_EMOJIS = ["✨", "⭐", "🌟", "💫"];
+      const HEART_EMOJIS = ["💖", "💕", "💘", "💝"];
       const NO_PHRASES = [
         "NO WAY!",
         "BLEH",
@@ -587,6 +641,15 @@
         "OKAY LAST NAGUD SURE NA?"
       ];
 
+      // Official Taylor Swift YouTube *embed* URLs
+      const TAYLOR_EMBED_LINKS = [
+        "https://www.youtube.com/embed/tCXGJQYZ9JA?autoplay=1", // Delicate
+        "https://www.youtube.com/embed/K-a8s8OLBSE?autoplay=1", // All Too Well (10 Min)
+        "https://www.youtube.com/embed/ic8j13piAhQ?autoplay=1", // cardigan
+        "https://www.youtube.com/embed/e-ORhEE9VVg?autoplay=1", // Blank Space
+        "https://www.youtube.com/embed/nfWlot6h_JM?autoplay=1"  // Shake It Off
+      ];
+
       const noBtn = document.getElementById("noBtn");
       const yesBtn = document.getElementById("yesBtn");
       const bouquetScene = document.getElementById("bouquetScene");
@@ -597,8 +660,10 @@
       const display = document.getElementById("displayMessage");
       const buttonsContainer = document.querySelector(".buttons");
       const areYouSureText = document.getElementById("areYouSureText");
-      const loverBtn = document.getElementById("loverBtn");
-      const loverAudio = document.getElementById("loverAudio");
+      const songLinkBtn = document.getElementById("songLinkBtn");
+      const musicBox = document.getElementById("musicBox");
+      const musicIframe = document.getElementById("musicIframe");
+      const musicBoxClose = document.getElementById("musicBoxClose");
 
       let sparkleIntervalId = null;
       let floatingHeartIntervalId = null;
@@ -608,6 +673,7 @@
       let bouquetShown = false;
       let tulipShown = false;
 
+      // Initialize EmailJS
       let emailAvailable = false;
       if (window.emailjs) {
         try {
@@ -692,8 +758,8 @@
             heart.style.left = Math.random() * 100 + "vw";
             heart.style.top = "-80px";
             heart.style.fontSize = (Math.random() * 50 + 50) + "px";
-            heart.style.opacity = 0.9;
-            heart.style.textShadow = "0 0 30px #fff, 0 0 60px #ffd15b";
+            heart.style.opacity = 0.8;
+            heart.style.textShadow = "0 0 30px #ff66b2, 0 0 60px #ff99cc";
             heart.style.pointerEvents = "none";
             document.body.appendChild(heart);
             const duration = 5000;
@@ -761,6 +827,7 @@
         setTimeout(showBouquetScene, 15000);
       }
 
+      // No button
       noBtn.addEventListener("mouseenter", () => {
         const phrase = NO_PHRASES[Math.floor(Math.random() * NO_PHRASES.length)];
         noBtn.textContent = phrase;
@@ -771,10 +838,9 @@
 
       window.addEventListener("load", moveNoButton);
 
-      // YES button grows like crazy each click
+      // YES button logic
       yesBtn.addEventListener("click", () => {
         yesClickCount++;
-
         if (yesClickCount <= YES_MESSAGES.length) {
           areYouSureText.textContent = YES_MESSAGES[yesClickCount - 1];
         } else {
@@ -782,35 +848,25 @@
         }
         areYouSureText.style.opacity = "1";
 
-        // Exaggerated growth: quickly fills most of the screen
-        const scale = Math.min(1 + yesClickCount * 0.5, 6); // cap so it doesn't go infinite
+        const scale = 1 + yesClickCount * 0.15;
         yesBtn.style.transform = "scale(" + scale + ")";
-        yesBtn.style.padding = (26 + yesClickCount * 6) + "px " + (80 + yesClickCount * 16) + "px";
-        yesBtn.style.fontSize = (1.5 + yesClickCount * 0.2) + "rem";
-        yesBtn.style.borderRadius = Math.max(40 - yesClickCount * 3, 12) + "px";
+        yesBtn.style.padding = (18 + yesClickCount * 2) + "px " + (40 + yesClickCount * 4) + "px";
+        yesBtn.style.fontSize = (1.1 + yesClickCount * 0.07) + "rem";
 
         if (yesClickCount >= 7 && !tulipShown) {
           showTulipScene();
         }
       });
 
-      if (loverBtn && loverAudio) {
-        loverBtn.addEventListener("click", () => {
-          if (loverAudio.paused) {
-            loverAudio.play().then(() => {
-              loverBtn.textContent = 'Pause "Lover" ⏸️';
-            }).catch(err => {
-              console.warn("Audio play blocked:", err);
-            });
-          } else {
-            loverAudio.pause();
-            loverBtn.textContent = 'Play "Lover" 🎵';
-          }
-        });
-
-        loverAudio.addEventListener("ended", () => {
-          loverBtn.textContent = 'Play "Lover" 🎵';
-        });
+      // Email send
+      let emailAvailable = false;
+      if (window.emailjs) {
+        try {
+          emailjs.init(EMAILJS_PUBLIC_KEY);
+          emailAvailable = true;
+        } catch (e) {
+          console.error("EmailJS init error:", e);
+        }
       }
 
       sendBtn.addEventListener("click", () => {
@@ -836,11 +892,28 @@
             },
             (error) => {
               console.error("EmailJS Error:", error);
-              display.textContent = "❌ Failed to send! Check service/template/key in EmailJS.";
+              display.textContent = "❌ Failed to send! Check EmailJS service/template/key.";
               sendBtn.disabled = false;
             }
           );
       });
+
+      // Music button: show small YouTube box with random Taylor Swift song
+      if (songLinkBtn) {
+        songLinkBtn.addEventListener("click", () => {
+          const url = TAYLOR_EMBED_LINKS[Math.floor(Math.random() * TAYLOR_EMBED_LINKS.length)];
+          musicIframe.src = url;
+          musicBox.style.display = "block";
+        });
+      }
+
+      // Close music box
+      if (musicBoxClose) {
+        musicBoxClose.addEventListener("click", () => {
+          musicBox.style.display = "none";
+          musicIframe.src = ""; // stop video
+        });
+      }
     })();
   </script>
 </body>
