@@ -15,7 +15,6 @@
       --accent-2: #ff99cc;
       --text-shadow-strong: 0 0 20px #fff, 0 0 40px #ff66b2;
       --transition-fast: 0.3s ease;
-      --transition-med: 0.6s ease;
       --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
       --font-playful: "Comic Sans MS", "Comic Neue", cursive;
@@ -173,29 +172,109 @@
       transition: opacity 0.3s ease;
     }
 
-    /* Bouquet Scene */
-    #bouquetScene {
+    /* Shared overlay scene base */
+    .scene {
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(circle, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9)),
-        url("kirig.jpeg") center/cover no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 1.5s ease;
+      transition: opacity 1s ease;
       text-align: center;
       padding: 20px;
       color: #fff;
+    }
+
+    .scene.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Tulip loading scene */
+    #tulipScene {
+      background:
+        radial-gradient(circle, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.9)),
+        url("kirig.jpeg") center/cover no-repeat;
       background-blend-mode: soft-light;
     }
 
-    #bouquetScene.active {
-      opacity: 1;
-      pointer-events: auto;
+    .tulip-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-size: clamp(2.2rem, 8vw, 3.3rem);
+    }
+
+    .tulip {
+      display: inline-block;
+      animation: tulipSway 2s ease-in-out infinite;
+    }
+
+    .tulip:nth-child(2) { animation-delay: 0.2s; }
+    .tulip:nth-child(3) { animation-delay: 0.4s; }
+    .tulip:nth-child(4) { animation-delay: 0.6s; }
+    .tulip:nth-child(5) { animation-delay: 0.8s; }
+
+    @keyframes tulipSway {
+      0%   { transform: translateY(0) rotate(0deg); }
+      25%  { transform: translateY(-5px) rotate(-3deg); }
+      50%  { transform: translateY(0) rotate(0deg); }
+      75%  { transform: translateY(-5px) rotate(3deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    .tulip-text {
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+      max-width: 320px;
+      line-height: 1.5;
+      text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .loading-box {
+      width: min(320px, 80vw);
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 10px 12px 14px;
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
+    }
+
+    .loading-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.25);
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .loading-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff4da6, #ff99cc, #ffd6ec);
+      animation: loadingGrow 15s linear forwards;
+    }
+
+    @keyframes loadingGrow {
+      from { width: 0%; }
+      to   { width: 100%; }
+    }
+
+    .loading-text {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* Bouquet Scene */
+    #bouquetScene {
+      background:
+        radial-gradient(circle, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9)),
+        url("kirig.jpeg") center/cover no-repeat;
+      background-blend-mode: soft-light;
     }
 
     .bouquet {
@@ -294,6 +373,10 @@
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
       }
+
+      .loading-bar {
+        animation-duration: 0.001ms !important;
+      }
     }
 
     /* Small screens */
@@ -320,7 +403,30 @@
     <p id="areYouSureText" class="are-you-sure"></p>
   </main>
 
-  <section id="bouquetScene" aria-hidden="true">
+  <!-- Tulip loading scene (15s) -->
+  <section id="tulipScene" class="scene" aria-hidden="true">
+    <div class="tulip-row" aria-hidden="true">
+      <span class="tulip">🌷</span>
+      <span class="tulip">🌷</span>
+      <span class="tulip">🌷</span>
+      <span class="tulip">🌷</span>
+      <span class="tulip">🌷</span>
+    </div>
+    <p class="tulip-text">
+      Growing special tulips just for you... 🌷💖
+    </p>
+    <div class="loading-box">
+      <div class="loading-track">
+        <div class="loading-bar" id="tulipLoadingBar"></div>
+      </div>
+      <div class="loading-text" id="tulipLoadingText">
+        Please wait 15 seconds...
+      </div>
+    </div>
+  </section>
+
+  <!-- Final message / bouquet scene -->
+  <section id="bouquetScene" class="scene" aria-hidden="true">
     <div class="bouquet" aria-hidden="true">💐🌹💖</div>
     <p class="romantic-text">
       AWWWWWWWWWWWWWWWWW I LOVE YOUUUUUUUUUUUUUUU 💖🌹💞
@@ -363,6 +469,8 @@
       const noBtn = document.getElementById("noBtn");
       const yesBtn = document.getElementById("yesBtn");
       const bouquetScene = document.getElementById("bouquetScene");
+      const tulipScene = document.getElementById("tulipScene");
+      const tulipLoadingText = document.getElementById("tulipLoadingText");
       const sendBtn = document.getElementById("sendBtn");
       const loveInput = document.getElementById("loveInput");
       const display = document.getElementById("displayMessage");
@@ -373,6 +481,7 @@
       let floatingHeartIntervalId = null;
       let yesClickCount = 0;
       let bouquetShown = false;
+      let tulipShown = false;
 
       // Initialize EmailJS with your PUBLIC key
       if (window.emailjs) {
@@ -503,11 +612,38 @@
         if (bouquetShown) return;
         bouquetShown = true;
 
+        tulipScene.classList.remove("active");
+        tulipScene.setAttribute("aria-hidden", "true");
+
         bouquetScene.classList.add("active");
         bouquetScene.setAttribute("aria-hidden", "false");
+
         startSparkles();
         startFloatingHearts();
         startHeartRainStaggered();
+      }
+
+      function showTulipScene() {
+        if (tulipShown) return;
+        tulipShown = true;
+
+        tulipScene.classList.add("active");
+        tulipScene.setAttribute("aria-hidden", "false");
+
+        // Optional: simple countdown text update
+        let remaining = 15;
+        tulipLoadingText.textContent = "Please wait 15 seconds...";
+        const countdown = setInterval(() => {
+          remaining--;
+          if (remaining <= 0) {
+            clearInterval(countdown);
+          } else {
+            tulipLoadingText.textContent = "Please wait " + remaining + " seconds...";
+          }
+        }, 1000);
+
+        // After 15 seconds, show final message area
+        setTimeout(showBouquetScene, 15000);
       }
 
       // No button: run-away + phrases + BLEEH effect
@@ -523,7 +659,7 @@
       // Position the "No" button once at start
       window.addEventListener("load", moveNoButton);
 
-      // YES button: 7 clicks, messages + grows, then show bouquet
+      // YES button: 7 clicks, messages + grows, then tulip scene (15s) then bouquet/message area
       yesBtn.addEventListener("click", () => {
         yesClickCount++;
 
@@ -539,14 +675,8 @@
         yesBtn.style.padding = (18 + yesClickCount * 2) + "px " + (40 + yesClickCount * 4) + "px";
         yesBtn.style.fontSize = (1.1 + yesClickCount * 0.07) + "rem";
 
-        if (yesClickCount >= 7) {
-          document.body.style.transition = "opacity 1s";
-          document.body.style.opacity = "0";
-
-          setTimeout(() => {
-            document.body.style.opacity = "1";
-            showBouquetScene();
-          }, 1000);
+        if (yesClickCount >= 7 && !tulipShown) {
+          showTulipScene();
         }
       });
 
