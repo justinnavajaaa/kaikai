@@ -91,7 +91,6 @@
         border-radius var(--transition-fast);
     }
 
-    /* Big YES by default; will get HUGE on clicks */
     #yesBtn {
       padding: 26px 80px;
       font-size: 1.5rem;
@@ -771,7 +770,7 @@
 
       window.addEventListener("load", moveNoButton);
 
-      // YES button grows like crazy each click
+      // YES button: gentle growth only (stays readable, doesn't cover screen)
       yesBtn.addEventListener("click", () => {
         yesClickCount++;
 
@@ -782,12 +781,18 @@
         }
         areYouSureText.style.opacity = "1";
 
-        // Exaggerated growth: quickly fills most of the screen
-        const scale = Math.min(1 + yesClickCount * 0.5, 6); // cap so it doesn't go infinite
+        // Subtle scale up: max 1.4x
+        const scale = Math.min(1 + yesClickCount * 0.08, 1.4);
         yesBtn.style.transform = "scale(" + scale + ")";
-        yesBtn.style.padding = (26 + yesClickCount * 6) + "px " + (80 + yesClickCount * 16) + "px";
-        yesBtn.style.fontSize = (1.5 + yesClickCount * 0.2) + "rem";
-        yesBtn.style.borderRadius = Math.max(40 - yesClickCount * 3, 12) + "px";
+
+        // Slight padding and font-size increase, but not too big
+        const basePaddingY = 26;
+        const basePaddingX = 80;
+        const baseFont = 1.5;
+        yesBtn.style.padding = (basePaddingY + yesClickCount * 2) + "px " +
+                               (basePaddingX + yesClickCount * 4) + "px";
+        yesBtn.style.fontSize = (baseFont + yesClickCount * 0.06) + "rem";
+        yesBtn.style.borderRadius = "999px";
 
         if (yesClickCount >= 7 && !tulipShown) {
           showTulipScene();
