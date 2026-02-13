@@ -565,6 +565,11 @@
 
   <script>
     (function () {
+      // 🔐 REPLACE these with your real EmailJS values
+      const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+      const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+      const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // template must have variable "mahiwagangmensahe"
+
       const HEART_EMOJIS = ["💖", "💕", "💘", "💝"];
       const NO_PHRASES = [
         "NO WAY!",
@@ -602,10 +607,16 @@
       let tulipShown = false;
 
       // Initialize EmailJS with your PUBLIC key
-      if (window.emailjs) {
-        emailjs.init("Jsq8y9n9irXxy36f");
+      let emailAvailable = false;
+      if (window.emailjs && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+        try {
+          emailjs.init(EMAILJS_PUBLIC_KEY);
+          emailAvailable = true;
+        } catch (e) {
+          console.error("EmailJS init error:", e);
+        }
       } else {
-        console.warn("EmailJS failed to load.");
+        console.warn("EmailJS not configured yet. Set your PUBLIC KEY in the script.");
       }
 
       function randomInRange(min, max) {
@@ -836,8 +847,17 @@
           return;
         }
 
-        if (!window.emailjs) {
-          display.textContent = "❌ Email service not available.";
+        if (!emailAvailable) {
+          display.textContent = "❌ Email service not configured. (Check your EmailJS keys.)";
+          console.warn("EmailJS not ready. Make sure PUBLIC KEY, SERVICE ID, and TEMPLATE ID are set.");
+          return;
+        }
+
+        if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID ||
+            EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" ||
+            EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID") {
+          display.textContent = "❌ Email service IDs missing. Please set them in the code.";
+          console.warn("Set EMAILJS_SERVICE_ID and EMAILJS_TEMPLATE_ID to your real IDs.");
           return;
         }
 
@@ -847,7 +867,7 @@
         const templateParams = { mahiwagangmensahe: input };
 
         emailjs
-          .send("service_vi9ffxq", "template_xzyvp0c", templateParams)
+          .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
           .then(
             () => {
               display.textContent = "💌 Message sent! 💖";
@@ -856,7 +876,7 @@
             },
             (error) => {
               console.error("EmailJS Error:", error);
-              display.textContent = "❌ Failed to send!";
+              display.textContent = "❌ Failed to send! (Check EmailJS service / template / key.)";
               sendBtn.disabled = false;
             }
           );
