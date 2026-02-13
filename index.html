@@ -556,12 +556,15 @@
         aria-label="Your sweet message"
       ></textarea>
       <button class="submit-btn" id="sendBtn" type="button">Send 💖</button>
+
+      <!-- Button that opens Taylor Swift - Lover in a new tab -->
+      <button class="submit-btn" id="loverBtn" type="button">
+        Play "Lover" by Taylor Swift 🎵
+      </button>
+
       <div class="love-message" id="displayMessage" aria-live="polite"></div>
     </div>
   </section>
-
-  <!-- Chorus audio: put valentine-chorus.mp3 in same folder -->
-  <audio id="valentineSong" src="valentine-chorus.mp3"></audio>
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -590,6 +593,8 @@
         "OKAY LAST NAGUD SURE NA?"
       ];
 
+      const TAYLOR_LOVER_URL = "https://www.youtube.com/watch?v=-BjZmE2gtdo";
+
       const noBtn = document.getElementById("noBtn");
       const yesBtn = document.getElementById("yesBtn");
       const bouquetScene = document.getElementById("bouquetScene");
@@ -600,7 +605,7 @@
       const display = document.getElementById("displayMessage");
       const buttonsContainer = document.querySelector(".buttons");
       const areYouSureText = document.getElementById("areYouSureText");
-      const song = document.getElementById("valentineSong");
+      const loverBtn = document.getElementById("loverBtn");
 
       let sparkleIntervalId = null;
       let floatingHeartIntervalId = null;
@@ -768,14 +773,6 @@
         }
       }
 
-      function playSong() {
-        if (!song) return;
-        song.currentTime = 0;
-        song.play().catch(err => {
-          console.warn("Song play blocked:", err);
-        });
-      }
-
       function showBouquetScene() {
         if (bouquetShown) return;
         bouquetShown = true;
@@ -788,7 +785,6 @@
         bouquetScene.classList.add("active");
         bouquetScene.setAttribute("aria-hidden", "false");
 
-        playSong();
         startSparkles();
         startFloatingHearts();
         startHeartRainStaggered();
@@ -850,6 +846,13 @@
           showTulipScene();
         }
       });
+
+      // Lover button: open Taylor Swift - Lover in new tab
+      if (loverBtn) {
+        loverBtn.addEventListener("click", () => {
+          window.open(TAYLOR_LOVER_URL, "_blank", "noopener");
+        });
+      }
 
       // Send message via EmailJS
       sendBtn.addEventListener("click", () => {
