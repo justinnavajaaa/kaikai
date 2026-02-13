@@ -199,37 +199,107 @@
         radial-gradient(circle, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.9)),
         url("kirig.jpeg") center/cover no-repeat;
       background-blend-mode: soft-light;
+      overflow: hidden;
     }
 
-    .tulip-row {
+    /* 3D‑style tulips */
+    .tulip-field {
       display: flex;
-      gap: 12px;
+      gap: 18px;
       margin-bottom: 18px;
-      font-size: clamp(2.2rem, 8vw, 3.3rem);
+      perspective: 800px;
     }
 
-    .tulip {
-      display: inline-block;
-      animation: tulipSway 2s ease-in-out infinite;
+    .tulip-3d {
+      position: relative;
+      width: 45px;
+      height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      transform-origin: bottom center;
+      animation: tulipSway 2.4s ease-in-out infinite;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
     }
 
-    .tulip:nth-child(2) { animation-delay: 0.2s; }
-    .tulip:nth-child(3) { animation-delay: 0.4s; }
-    .tulip:nth-child(4) { animation-delay: 0.6s; }
-    .tulip:nth-child(5) { animation-delay: 0.8s; }
+    .tulip-3d:nth-child(2) { animation-delay: 0.2s; }
+    .tulip-3d:nth-child(3) { animation-delay: 0.4s; }
+    .tulip-3d:nth-child(4) { animation-delay: 0.6s; }
+    .tulip-3d:nth-child(5) { animation-delay: 0.8s; }
 
     @keyframes tulipSway {
-      0%   { transform: translateY(0) rotate(0deg); }
-      25%  { transform: translateY(-5px) rotate(-3deg); }
-      50%  { transform: translateY(0) rotate(0deg); }
-      75%  { transform: translateY(-5px) rotate(3deg); }
-      100% { transform: translateY(0) rotate(0deg); }
+      0%   { transform: rotateZ(0deg) rotateX(8deg) translateY(0); }
+      25%  { transform: rotateZ(-4deg) rotateX(6deg) translateY(-4px); }
+      50%  { transform: rotateZ(0deg) rotateX(8deg) translateY(0); }
+      75%  { transform: rotateZ(4deg) rotateX(10deg) translateY(-4px); }
+      100% { transform: rotateZ(0deg) rotateX(8deg) translateY(0); }
+    }
+
+    .tulip-stem {
+      position: absolute;
+      bottom: 0;
+      width: 6px;
+      height: 80px;
+      border-radius: 999px;
+      background: linear-gradient(to bottom, #7adf7a, #1c7d36);
+    }
+
+    .tulip-leaf {
+      position: absolute;
+      bottom: 20px;
+      width: 26px;
+      height: 40px;
+      border-radius: 0 80% 0 80%;
+      background: radial-gradient(circle at 0 0, #9af19a, #1b6c30);
+      transform-origin: bottom left;
+      transform: rotate(-18deg);
+    }
+
+    .tulip-leaf.right {
+      right: -4px;
+      left: auto;
+      border-radius: 80% 0 80% 0;
+      transform-origin: bottom right;
+      transform: rotate(18deg);
+    }
+
+    .tulip-bulb {
+      position: absolute;
+      bottom: 70px;
+      width: 40px;
+      height: 40px;
+      border-radius: 40px 40px 16px 16px;
+      background: radial-gradient(circle at 30% 10%, #ffe5f6, #ff4da6 55%, #a80056 100%);
+      box-shadow:
+        0 0 14px rgba(255, 121, 188, 0.7),
+        0 0 24px rgba(255, 121, 188, 0.5);
+    }
+
+    .tulip-bulb::before,
+    .tulip-bulb::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 24px;
+      border-radius: 60% 60% 0 0;
+      background: radial-gradient(circle at 50% 0, #ffe9fa, #ff6fb5 60%, #b30060 100%);
+      top: -6px;
+    }
+
+    .tulip-bulb::before {
+      left: -2px;
+      transform: rotate(-12deg);
+    }
+
+    .tulip-bulb::after {
+      right: -2px;
+      transform: rotate(12deg);
     }
 
     .tulip-text {
       font-size: 1.2rem;
       margin-bottom: 14px;
-      max-width: 320px;
+      max-width: 340px;
       line-height: 1.5;
       text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
     }
@@ -267,6 +337,25 @@
     .loading-text {
       font-size: 0.95rem;
       opacity: 0.9;
+    }
+
+    /* Raining stars in tulip scene */
+    .star {
+      position: absolute;
+      font-size: 1rem;
+      color: #ffe8a3;
+      text-shadow:
+        0 0 10px #fff8c2,
+        0 0 18px #ffd15b,
+        0 0 24px #ff9e2c;
+      pointer-events: none;
+      animation: starFall 4s linear infinite;
+    }
+
+    @keyframes starFall {
+      0%   { transform: translateY(-10vh) scale(0.8); opacity: 0; }
+      10%  { opacity: 1; }
+      100% { transform: translateY(110vh) scale(1); opacity: 0; }
     }
 
     /* Bouquet Scene */
@@ -405,16 +494,43 @@
 
   <!-- Tulip loading scene (15s) -->
   <section id="tulipScene" class="scene" aria-hidden="true">
-    <div class="tulip-row" aria-hidden="true">
-      <span class="tulip">🌷</span>
-      <span class="tulip">🌷</span>
-      <span class="tulip">🌷</span>
-      <span class="tulip">🌷</span>
-      <span class="tulip">🌷</span>
+    <div class="tulip-field" aria-hidden="true">
+      <div class="tulip-3d">
+        <div class="tulip-stem"></div>
+        <div class="tulip-leaf"></div>
+        <div class="tulip-leaf right"></div>
+        <div class="tulip-bulb"></div>
+      </div>
+      <div class="tulip-3d">
+        <div class="tulip-stem"></div>
+        <div class="tulip-leaf"></div>
+        <div class="tulip-leaf right"></div>
+        <div class="tulip-bulb"></div>
+      </div>
+      <div class="tulip-3d">
+        <div class="tulip-stem"></div>
+        <div class="tulip-leaf"></div>
+        <div class="tulip-leaf right"></div>
+        <div class="tulip-bulb"></div>
+      </div>
+      <div class="tulip-3d">
+        <div class="tulip-stem"></div>
+        <div class="tulip-leaf"></div>
+        <div class="tulip-leaf right"></div>
+        <div class="tulip-bulb"></div>
+      </div>
+      <div class="tulip-3d">
+        <div class="tulip-stem"></div>
+        <div class="tulip-leaf"></div>
+        <div class="tulip-leaf right"></div>
+        <div class="tulip-bulb"></div>
+      </div>
     </div>
+
     <p class="tulip-text">
-      Growing special tulips just for you... 🌷💖
+      Growing magical tulips just for you... 🌷✨
     </p>
+
     <div class="loading-box">
       <div class="loading-track">
         <div class="loading-bar" id="tulipLoadingBar"></div>
@@ -479,6 +595,8 @@
 
       let sparkleIntervalId = null;
       let floatingHeartIntervalId = null;
+      let starIntervalId = null;
+
       let yesClickCount = 0;
       let bouquetShown = false;
       let tulipShown = false;
@@ -608,9 +726,38 @@
         }
       }
 
+      // Star rain only in tulip scene
+      function createStar() {
+        const star = document.createElement("div");
+        star.classList.add("star");
+        star.textContent = Math.random() < 0.4 ? "✨" : "⭐";
+
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.top = "-10vh";
+        star.style.animationDuration = (Math.random() * 3 + 3) + "s";
+
+        tulipScene.appendChild(star);
+
+        setTimeout(() => star.remove(), 6000);
+      }
+
+      function startStarRain() {
+        if (starIntervalId !== null) return;
+        starIntervalId = setInterval(createStar, 250);
+      }
+
+      function stopStarRain() {
+        if (starIntervalId !== null) {
+          clearInterval(starIntervalId);
+          starIntervalId = null;
+        }
+      }
+
       function showBouquetScene() {
         if (bouquetShown) return;
         bouquetShown = true;
+
+        stopStarRain();
 
         tulipScene.classList.remove("active");
         tulipScene.setAttribute("aria-hidden", "true");
@@ -630,7 +777,8 @@
         tulipScene.classList.add("active");
         tulipScene.setAttribute("aria-hidden", "false");
 
-        // Optional: simple countdown text update
+        startStarRain();
+
         let remaining = 15;
         tulipLoadingText.textContent = "Please wait 15 seconds...";
         const countdown = setInterval(() => {
@@ -642,7 +790,6 @@
           }
         }, 1000);
 
-        // After 15 seconds, show final message area
         setTimeout(showBouquetScene, 15000);
       }
 
