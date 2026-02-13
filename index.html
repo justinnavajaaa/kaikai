@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine 💖</title>
+
+  <style>
+    :root {
+      --pink-1: #ffb6d9;
+      --pink-2: #ffc2e2;
+      --pink-3: #ff9ad5;
+      --pink-4: #ffd6ec;
+      --accent-1: #ff4da6;
+      --accent-2: #ff99cc;
+      --text-shadow-strong: 0 0 20px #fff, 0 0 40px #ff66b2;
+      --transition-fast: 0.3s ease;
+      --transition-med: 0.6s ease;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --font-playful: "Comic Sans MS", "Comic Neue", cursive;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: var(--font-playful);
+      background: linear-gradient(-45deg, var(--pink-1), var(--pink-2), var(--pink-3), var(--pink-4));
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      position: relative;
+      text-align: center;
+      padding: 24px 16px 40px;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      margin-top: 40px;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      text-shadow: var(--text-shadow-strong);
+    }
+
+    .buttons {
+      margin-top: 48px;
+      position: relative;
+      width: min(400px, 100%);
+      height: 220px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+    }
+
+    #yesBtn,
+    #noBtn {
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-main);
+      font-weight: 600;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+    }
+
+    #yesBtn {
+      padding: 18px 40px;
+      font-size: 1.1rem;
+      border-radius: 40px;
+      background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 0 25px #ff66b2;
+    }
+
+    #yesBtn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 0 35px #ff66b2;
+    }
+
+    #noBtn {
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      border-radius: 30px;
+      background: #fff;
+      color: var(--accent-1);
+      position: absolute;
+    }
+
+    #noBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+
+    .emoji-pop {
+      position: fixed;
+      font-size: 4.5rem;
+      pointer-events: none;
+      animation: popAnim 0.3s ease;
+      filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.35));
+    }
+
+    @keyframes popAnim {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .heart {
+      position: absolute;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    /* Bouquet Scene */
+    #bouquetScene {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, var(--accent-1), #b30059);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+      text-align: center;
+      padding: 20px;
+      color: #fff;
+    }
+
+    #bouquetScene.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bouquet {
+      font-size: clamp(4rem, 12vw, 5.5rem);
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #fff, 0 0 40px #ff99cc; }
+      to { text-shadow: 0 0 60px #fff, 0 0 100px #ff1a75; }
+    }
+
+    .romantic-text {
+      font-size: 1.3rem;
+      margin: 18px 0;
+      line-height: 1.5;
+      max-width: 480px;
+    }
+
+    .message-wrapper {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    textarea {
+      width: min(320px, 90vw);
+      height: 90px;
+      border-radius: 15px;
+      border: none;
+      padding: 10px;
+      resize: none;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      outline: none;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+    }
+
+    textarea:focus {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+    }
+
+    .submit-btn {
+      margin-top: 4px;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 20px;
+      background: #fff;
+      color: var(--accent-1);
+      cursor: pointer;
+      font-weight: bold;
+      font-family: var(--font-main);
+      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-2);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: default;
+      transform: none;
+    }
+
+    .love-message {
+      margin-top: 10px;
+      font-size: 1rem;
+      max-width: 320px;
+      word-wrap: break-word;
+      min-height: 1.4em;
+    }
+
+    .sparkle {
+      position: absolute;
+      font-size: 1.1rem;
+      animation: sparkleMove 4s linear infinite;
+      pointer-events: none;
+      text-shadow: 0 0 10px #fff;
+    }
+
+    @keyframes sparkleMove {
+      0% { transform: translateY(100vh); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Small screens */
+    @media (max-width: 480px) {
+      .buttons {
+        height: 200px;
+      }
+
+      #yesBtn {
+        padding-inline: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main aria-live="polite">
+    <h1>Will You Be My Valentine? 💖</h1>
+
+    <section class="buttons" aria-label="Valentine answer buttons">
+      <button id="yesBtn" type="button">YES 💕</button>
+      <button id="noBtn" type="button">No 💔</button>
+    </section>
+  </main>
+
+  <section id="bouquetScene" aria-hidden="true">
+    <div class="bouquet" aria-hidden="true">💐🌹💖</div>
+    <p class="romantic-text">
+      AWWWWWWWWWWWWWWWWW I LOVE YOUUUUUUUUUUUUUUU 💖🌹💞
+    </p>
+
+    <div class="message-wrapper">
+      <label for="loveInput" style="position:absolute;left:-9999px;">Leave a sweet message</label>
+      <textarea
+        id="loveInput"
+        placeholder="Leave a sweet message... 💌"
+        aria-label="Your sweet message"
+      ></textarea>
+      <button class="submit-btn" id="sendBtn" type="button">Send 💖</button>
+      <div class="love-message" id="displayMessage" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script>
+    // Wrap everything so we only run after DOM & EmailJS are available
+    (function () {
+      const HEART_EMOJIS = ["💖", "💕", "💘", "💝"];
+
+      const noBtn = document.getElementById("noBtn");
+      const yesBtn = document.getElementById("yesBtn");
+      const bouquetScene = document.getElementById("bouquetScene");
+      const sendBtn = document.getElementById("sendBtn");
+      const loveInput = document.getElementById("loveInput");
+      const display = document.getElementById("displayMessage");
+      const buttonsContainer = document.querySelector(".buttons");
+
+      let sparkleIntervalId = null;
+      let floatingHeartIntervalId = null;
+
+      // Initialize EmailJS with your PUBLIC key
+      if (window.emailjs) {
+        emailjs.init("Jsq8y9n9irXxy36f");
+      } else {
+        console.warn("EmailJS failed to load.");
+      }
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function moveNoButton() {
+        if (!buttonsContainer) return;
+
+        const maxX = buttonsContainer.clientWidth - noBtn.offsetWidth;
+        const maxY = buttonsContainer.clientHeight - noBtn.offsetHeight;
+
+        if (maxX <= 0 || maxY <= 0) return;
+
+        const x = randomInRange(0, maxX);
+        const y = randomInRange(0, maxY);
+
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+      }
+
+      function showEmojiFar() {
+        const emoji = document.createElement("div");
+        emoji.classList.add("emoji-pop");
+        emoji.textContent = "😛";
+
+        emoji.style.left = (Math.random() * 50 + 25) + "vw";
+        emoji.style.top = (Math.random() * 50 + 25) + "vh";
+
+        document.body.appendChild(emoji);
+
+        setTimeout(() => {
+          emoji.remove();
+        }, 3000);
+      }
+
+      function createFloatingHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 25 + 20) + "px";
+        heart.style.animationDuration = (Math.random() * 6 + 6) + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 10000);
+      }
+
+      function startFloatingHearts() {
+        if (floatingHeartIntervalId !== null) return;
+        floatingHeartIntervalId = setInterval(createFloatingHeart, 300);
+      }
+
+      function startSparkles() {
+        if (sparkleIntervalId !== null) return;
+
+        sparkleIntervalId = setInterval(() => {
+          const sparkle = document.createElement("div");
+          sparkle.classList.add("sparkle");
+          sparkle.textContent = "✨";
+          sparkle.style.left = Math.random() * 100 + "vw";
+
+          document.body.appendChild(sparkle);
+
+          setTimeout(() => sparkle.remove(), 4000);
+        }, 300);
+      }
+
+      function startHeartRainStaggered() {
+        const totalHearts = 20;
+
+        for (let i = 0; i < totalHearts; i++) {
+          setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+            heart.style.position = "fixed";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "-80px";
+            heart.style.fontSize = (Math.random() * 50 + 50) + "px";
+            heart.style.opacity = 0.8;
+            heart.style.textShadow = "0 0 30px #ff66b2, 0 0 60px #ff99cc";
+            heart.style.pointerEvents = "none";
+
+            document.body.appendChild(heart);
+
+            const duration = 5000;
+            heart.animate(
+              [
+                { transform: "translateY(0px)" },
+                { transform: "translateY(100vh)" }
+              ],
+              {
+                duration,
+                iterations: 1,
+                easing: "ease-out"
+              }
+            );
+
+            setTimeout(() => heart.remove(), duration);
+          }, i * 200);
+        }
+      }
+
+      function showBouquetScene() {
+        bouquetScene.classList.add("active");
+        bouquetScene.setAttribute("aria-hidden", "false");
+        startSparkles();
+        startFloatingHearts();
+        startHeartRainStaggered();
+      }
+
+      // Events
+      noBtn.addEventListener("mouseenter", () => {
+        moveNoButton();
+        showEmojiFar();
+      });
+
+      // Position the "No" button once at start
+      window.addEventListener("load", moveNoButton);
+
+      yesBtn.addEventListener("click", () => {
+        // Soften the transition: fade out main, then show bouquet
+        document.body.style.transition = "opacity 1s";
+        document.body.style.opacity = "0";
+
+        setTimeout(() => {
+          document.body.style.opacity = "1";
+          showBouquetScene();
+        }, 1000);
+      });
+
+      sendBtn.addEventListener("click", () => {
+        const input = loveInput.value.trim();
+
+        if (!input) {
+          display.textContent = "❌ Please type a message!";
+          return;
+        }
+
+        if (!window.emailjs) {
+          display.textContent = "❌ Email service not available.";
+          return;
+        }
+
+        sendBtn.disabled = true;
+        display.textContent = "📨 Sending...";
+
+        const templateParams = { mahiwagangmensahe: input };
+
+        emailjs
+          .send("service_vi9ffxq", "template_xzyvp0c", templateParams)
+          .then(
+            () => {
+              display.textContent = "💌 Message sent! 💖";
+              sendBtn.disabled = false;
+              loveInput.value = "";
+            },
+            (error) => {
+              console.error("EmailJS Error:", error);
+              display.textContent = "❌ Failed to send!";
+              sendBtn.disabled = false;
+            }
+          );
+      });
+    })();
+  </script>
+</body>
+</html>
