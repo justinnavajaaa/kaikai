@@ -72,7 +72,7 @@
       cursor: pointer;
       font-family: var(--font-main);
       font-weight: 600;
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+      transition: box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
     }
 
     #yesBtn {
@@ -82,10 +82,10 @@
       background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
       color: #fff;
       box-shadow: 0 0 25px #ff66b2;
+      transform-origin: center;
     }
 
     #yesBtn:hover {
-      transform: translateY(-3px) scale(1.03);
       box-shadow: 0 0 35px #ff66b2;
     }
 
@@ -152,6 +152,16 @@
         transform: translate(-50%, -130%) scale(0.9);
         opacity: 0;
       }
+    }
+
+    /* "Are you sure?" text */
+    .are-you-sure {
+      margin-top: 8px;
+      font-size: 1rem;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      min-height: 1.4em;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     /* Bouquet Scene */
@@ -294,6 +304,8 @@
       <button id="yesBtn" type="button">YES 💕</button>
       <button id="noBtn" type="button">No 💔</button>
     </section>
+
+    <p id="areYouSureText" class="are-you-sure"></p>
   </main>
 
   <section id="bouquetScene" aria-hidden="true">
@@ -327,6 +339,14 @@
         "TOO SLOW!",
         "ONE MORE!"
       ];
+      const YES_MESSAGES = [
+        "ARE YOU SURE?",
+        "REALLY?",
+        "SURE NANI KAIKAI?",
+        "SURE NA SURE NA SURE?",
+        "OKAY LAST SURE NA GUD?",
+        "OKAY LAST NAGUD SURE NA?"
+      ];
 
       const noBtn = document.getElementById("noBtn");
       const yesBtn = document.getElementById("yesBtn");
@@ -335,9 +355,12 @@
       const loveInput = document.getElementById("loveInput");
       const display = document.getElementById("displayMessage");
       const buttonsContainer = document.querySelector(".buttons");
+      const areYouSureText = document.getElementById("areYouSureText");
 
       let sparkleIntervalId = null;
       let floatingHeartIntervalId = null;
+      let yesClickCount = 0;
+      let bouquetShown = false;
 
       // Initialize EmailJS with your PUBLIC key
       if (window.emailjs) {
@@ -465,6 +488,9 @@
       }
 
       function showBouquetScene() {
+        if (bouquetShown) return;
+        bouquetShown = true;
+
         bouquetScene.classList.add("active");
         bouquetScene.setAttribute("aria-hidden", "false");
         startSparkles();
@@ -472,33 +498,52 @@
         startHeartRainStaggered();
       }
 
-      // Events
+      // No button: run-away + phrases + BLEEH effect
       noBtn.addEventListener("mouseenter", () => {
-        // change text to a random phrase
         const phrase = NO_PHRASES[Math.floor(Math.random() * NO_PHRASES.length)];
         noBtn.textContent = phrase;
 
-        // original playful behavior
         moveNoButton();
         showEmojiFar();
-
-        // BLEEH word effect
         showBleehEffect();
       });
 
       // Position the "No" button once at start
       window.addEventListener("load", moveNoButton);
 
+      // YES button: 7 clicks, messages + grows, then show bouquet
       yesBtn.addEventListener("click", () => {
-        document.body.style.transition = "opacity 1s";
-        document.body.style.opacity = "0";
+        yesClickCount++;
 
-        setTimeout(() => {
-          document.body.style.opacity = "1";
-          showBouquetScene();
-        }, 1000);
+        // Show progressive "are you sure?" messages
+        if (yesClickCount <= YES_MESSAGES.length) {
+          areYouSureText.textContent = YES_MESSAGES[yesClickCount - 1];
+        } else {
+          // after we run out of custom phrases, keep last one
+          areYouSureText.textContent = YES_MESSAGES[YES_MESSAGES.length - 1];
+        }
+        areYouSureText.style.opacity = "1";
+
+        // Make YES button bigger every click
+        const scale = 1 + yesClickCount * 0.15;
+        yesBtn.style.transform = "scale(" + scale + ")";
+        // Optionally bump padding and font size a bit
+        yesBtn.style.padding = (18 + yesClickCount * 2) + "px " + (40 + yesClickCount * 4) + "px";
+        yesBtn.style.fontSize = (1.1 + yesClickCount * 0.07) + "rem";
+
+        // After 7th click, finally proceed to bouquet scene
+        if (yesClickCount >= 7) {
+          document.body.style.transition = "opacity 1s";
+          document.body.style.opacity = "0";
+
+          setTimeout(() => {
+            document.body.style.opacity = "1";
+            showBouquetScene();
+          }, 1000);
+        }
       });
 
+      // Send message via EmailJS
       sendBtn.addEventListener("click", () => {
         const input = loveInput.value.trim();
 
