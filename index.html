@@ -459,6 +459,38 @@
       100% { transform: translateY(-10vh); opacity: 0; }
     }
 
+    /* Big center star explosion */
+    .big-star {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 5rem;
+      z-index: 9999;
+      color: #ffe8a3;
+      text-shadow:
+        0 0 20px #fff8c2,
+        0 0 40px #ffd15b,
+        0 0 60px #ff9e2c;
+      animation: bigStarPop 1.2s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes bigStarPop {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      60% {
+        transform: translate(-50%, -50%) scale(1.4);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * {
         animation-duration: 0.001ms !important;
@@ -478,7 +510,8 @@
 </head>
 <body>
   <main aria-live="polite">
-    <h1>Will You Be My Valentine? 💖</h1>
+    <h1>HAIIIII KAIKAIIII JKLEASHESA
+      Will You Be My Valentine? 💖</h1>
 
     <section class="buttons" aria-label="Valentine answer buttons">
       <button id="yesBtn" type="button">YES 💕</button>
@@ -539,7 +572,7 @@
   <section id="bouquetScene" class="scene" aria-hidden="true">
     <div class="bouquet" aria-hidden="true">💐🌹💖</div>
     <p class="romantic-text">
-      AWWWWWWWWWWWWWWWWW I LOVE YOUUUUUUUUUUUUUUU 💖🌹💞
+      ARGHHHHHHHHHHH ILOVEYOUUUUUUU SOOOO MUCHHHH BABYYYYYY 💖🌹💞
     </p>
 
     <div class="message-wrapper">
@@ -728,6 +761,30 @@
         }
       }
 
+      // Big star + one-time raining stars after tulip duration
+      function triggerBigStarExplosion() {
+        const bigStar = document.createElement("div");
+        bigStar.classList.add("big-star");
+        bigStar.textContent = "⭐";
+        document.body.appendChild(bigStar);
+        setTimeout(() => bigStar.remove(), 1500);
+
+        // one-time raining stars (independent from tulipScene interval)
+        const count = 40;
+        for (let i = 0; i < count; i++) {
+          setTimeout(() => {
+            const star = document.createElement("div");
+            star.classList.add("star");
+            star.textContent = Math.random() < 0.5 ? "✨" : "⭐";
+            star.style.left = Math.random() * 100 + "vw";
+            star.style.top = "-10vh";
+            star.style.animationDuration = (Math.random() * 3 + 3) + "s";
+            document.body.appendChild(star);
+            setTimeout(() => star.remove(), 6000);
+          }, i * 60);
+        }
+      }
+
       function showBouquetScene() {
         if (bouquetShown) return;
         bouquetShown = true;
@@ -736,6 +793,10 @@
         tulipScene.setAttribute("aria-hidden", "true");
         bouquetScene.classList.add("active");
         bouquetScene.setAttribute("aria-hidden", "false");
+
+        // Big star explosion effect here
+        triggerBigStarExplosion();
+
         startSparkles();
         startFloatingHearts();
         startHeartRainStaggered();
@@ -781,11 +842,9 @@
         }
         areYouSureText.style.opacity = "1";
 
-        // Subtle scale up: max 1.4x
         const scale = Math.min(1 + yesClickCount * 0.08, 1.4);
         yesBtn.style.transform = "scale(" + scale + ")";
 
-        // Slight padding and font-size increase, but not too big
         const basePaddingY = 26;
         const basePaddingX = 80;
         const baseFont = 1.5;
