@@ -560,15 +560,18 @@
     </div>
   </section>
 
+  <!-- Chorus audio: put valentine-chorus.mp3 in same folder -->
+  <audio id="valentineSong" src="valentine-chorus.mp3"></audio>
+
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
   <script>
     (function () {
-      // 🔐 REPLACE these with your real EmailJS values
-      const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-      const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-      const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // template must have variable "mahiwagangmensahe"
+      // Your EmailJS values
+      const EMAILJS_PUBLIC_KEY = "Jsq8y9n9irXxy36f-";
+      const EMAILJS_SERVICE_ID = "service_vi9ffxq";
+      const EMAILJS_TEMPLATE_ID = "template_xzyvp0c"; // must have variable "mahiwagangmensahe"
 
       const HEART_EMOJIS = ["💖", "💕", "💘", "💝"];
       const NO_PHRASES = [
@@ -597,6 +600,7 @@
       const display = document.getElementById("displayMessage");
       const buttonsContainer = document.querySelector(".buttons");
       const areYouSureText = document.getElementById("areYouSureText");
+      const song = document.getElementById("valentineSong");
 
       let sparkleIntervalId = null;
       let floatingHeartIntervalId = null;
@@ -606,9 +610,9 @@
       let bouquetShown = false;
       let tulipShown = false;
 
-      // Initialize EmailJS with your PUBLIC key
+      // Initialize EmailJS
       let emailAvailable = false;
-      if (window.emailjs && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+      if (window.emailjs) {
         try {
           emailjs.init(EMAILJS_PUBLIC_KEY);
           emailAvailable = true;
@@ -616,7 +620,7 @@
           console.error("EmailJS init error:", e);
         }
       } else {
-        console.warn("EmailJS not configured yet. Set your PUBLIC KEY in the script.");
+        console.warn("EmailJS library not loaded.");
       }
 
       function randomInRange(min, max) {
@@ -764,6 +768,14 @@
         }
       }
 
+      function playSong() {
+        if (!song) return;
+        song.currentTime = 0;
+        song.play().catch(err => {
+          console.warn("Song play blocked:", err);
+        });
+      }
+
       function showBouquetScene() {
         if (bouquetShown) return;
         bouquetShown = true;
@@ -776,6 +788,7 @@
         bouquetScene.classList.add("active");
         bouquetScene.setAttribute("aria-hidden", "false");
 
+        playSong();
         startSparkles();
         startFloatingHearts();
         startHeartRainStaggered();
@@ -848,16 +861,7 @@
         }
 
         if (!emailAvailable) {
-          display.textContent = "❌ Email service not configured. (Check your EmailJS keys.)";
-          console.warn("EmailJS not ready. Make sure PUBLIC KEY, SERVICE ID, and TEMPLATE ID are set.");
-          return;
-        }
-
-        if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID ||
-            EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" ||
-            EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID") {
-          display.textContent = "❌ Email service IDs missing. Please set them in the code.";
-          console.warn("Set EMAILJS_SERVICE_ID and EMAILJS_TEMPLATE_ID to your real IDs.");
+          display.textContent = "❌ Email service not available. Check your EmailJS setup.";
           return;
         }
 
@@ -876,7 +880,7 @@
             },
             (error) => {
               console.error("EmailJS Error:", error);
-              display.textContent = "❌ Failed to send! (Check EmailJS service / template / key.)";
+              display.textContent = "❌ Failed to send! Check service/template/key in EmailJS.";
               sendBtn.disabled = false;
             }
           );
