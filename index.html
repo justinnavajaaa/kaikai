@@ -2,821 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Taylor Song Player</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Be My Valentine 💖</title>
 
   <style>
-    :root {
-      --pink-1: #ffb6d9;
-      --pink-2: #ffc2e2;
-      --pink-3: #ff9ad5;
-      --pink-4: #ffd6ec;
-      --accent-1: #ff4da6;
-      --accent-2: #ff99cc;
-      --text-shadow-strong: 0 0 20px #fff, 0 0 40px #ff66b2;
-      --transition-fast: 0.3s ease;
-      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      --font-playful: "Comic Sans MS", "Comic Neue", cursive;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
+      margin: 0;
       min-height: 100vh;
-      overflow: hidden;
-      font-family: var(--font-playful);
-      background-image:
-        linear-gradient(-45deg, var(--pink-1), var(--pink-2), var(--pink-3), var(--pink-4)),
-        url("kirig.jpeg");
-      background-size: 400% 400%, cover;
-      background-position: center center, center center;
-      background-repeat: no-repeat, no-repeat;
-      background-attachment: fixed;
-      animation: gradientMove 12s ease infinite;
-      background-blend-mode: soft-light;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #ffb6d9, #ff9ad5, #ffd6ec);
       color: #fff;
-      position: relative;
       text-align: center;
-      padding: 24px 16px 40px;
-    }
-
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%, center; }
-      50% { background-position: 100% 50%, center; }
-      100% { background-position: 0% 50%, center; }
     }
 
     h1 {
-      margin-top: 40px;
-      font-size: clamp(2.2rem, 4vw, 3rem);
-      text-shadow: var(--text-shadow-strong);
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px #ff66b2;
     }
 
-    .buttons {
-      margin-top: 48px;
-      position: relative;
-      width: min(400px, 100%);
-      height: 220px;
+    p {
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .controls {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
       align-items: center;
-      gap: 16px;
     }
 
-    #yesBtn,
-    #noBtn {
-      border: none;
-      cursor: pointer;
-      font-family: var(--font-main);
-      font-weight: 600;
-      transition: box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
-    }
-
-    #yesBtn {
-      padding: 18px 40px;
-      font-size: 1.1rem;
-      border-radius: 40px;
-      background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
-      color: #fff;
-      box-shadow: 0 0 25px #ff66b2;
-      transform-origin: center;
-    }
-
-    #yesBtn:hover {
-      box-shadow: 0 0 35px #ff66b2;
-    }
-
-    #noBtn {
+    #playTaylorBtn {
       padding: 10px 22px;
-      font-size: 0.95rem;
-      border-radius: 30px;
-      background: #fff;
-      color: var(--accent-1);
-      position: absolute;
-    }
-
-    #noBtn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-    }
-
-    .emoji-pop {
-      position: fixed;
-      font-size: 4.5rem;
-      pointer-events: none;
-      animation: popAnim 0.3s ease;
-      filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.35));
-    }
-
-    @keyframes popAnim {
-      from { transform: scale(0); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .heart {
-      position: absolute;
-      animation: floatUp linear infinite;
-    }
-
-    @keyframes floatUp {
-      0% { transform: translateY(100vh); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-10vh); opacity: 0; }
-    }
-
-    .bleeh-word {
-      position: fixed;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #ffffff;
-      text-shadow: 0 0 8px #ff4da6, 0 0 15px #ff99cc;
-      pointer-events: none;
-      animation: bleehPop 0.7s ease-out forwards;
-      z-index: 1000;
-    }
-
-    @keyframes bleehPop {
-      0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
-      40% { transform: translate(-50%, -80%) scale(1.1); opacity: 1; }
-      100% { transform: translate(-50%, -130%) scale(0.9); opacity: 0; }
-    }
-
-    .are-you-sure {
-      margin-top: 8px;
-      font-size: 1rem;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      min-height: 1.4em;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .scene {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 1s ease;
-      text-align: center;
-      padding: 20px;
-      color: #fff;
-    }
-
-    .scene.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    #tulipScene {
-      background:
-        radial-gradient(circle, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.9)),
-        url("kirig.jpeg") center/cover no-repeat;
-      background-blend-mode: soft-light;
-      overflow: hidden;
-    }
-
-    .tulip-field {
-      display: flex;
-      gap: 18px;
-      margin-bottom: 18px;
-      perspective: 800px;
-    }
-
-    .tulip-3d {
-      position: relative;
-      width: 45px;
-      height: 120px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      transform-origin: bottom center;
-      animation: tulipSway 2.4s ease-in-out infinite;
-      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
-    }
-
-    .tulip-3d:nth-child(2) { animation-delay: 0.2s; }
-    .tulip-3d:nth-child(3) { animation-delay: 0.4s; }
-    .tulip-3d:nth-child(4) { animation-delay: 0.6s; }
-    .tulip-3d:nth-child(5) { animation-delay: 0.8s; }
-
-    @keyframes tulipSway {
-      0%   { transform: rotateZ(0deg) rotateX(8deg) translateY(0); }
-      25%  { transform: rotateZ(-4deg) rotateX(6deg) translateY(-4px); }
-      50%  { transform: rotateZ(0deg) rotateX(8deg) translateY(0); }
-      75%  { transform: rotateZ(4deg) rotateX(10deg) translateY(-4px); }
-      100% { transform: rotateZ(0deg) rotateX(8deg) translateY(0); }
-    }
-
-    .tulip-stem {
-      position: absolute;
-      bottom: 0;
-      width: 6px;
-      height: 80px;
       border-radius: 999px;
-      background: linear-gradient(to bottom, #7adf7a, #1c7d36);
-    }
-
-    .tulip-leaf {
-      position: absolute;
-      bottom: 20px;
-      width: 26px;
-      height: 40px;
-      border-radius: 0 80% 0 80%;
-      background: radial-gradient(circle at 0 0, #9af19a, #1b6c30);
-      transform-origin: bottom left;
-      transform: rotate(-18deg);
-    }
-
-    .tulip-leaf.right {
-      right: -4px;
-      left: auto;
-      border-radius: 80% 0 80% 0;
-      transform-origin: bottom right;
-      transform: rotate(18deg);
-    }
-
-    .tulip-bulb {
-      position: absolute;
-      bottom: 70px;
-      width: 40px;
-      height: 40px;
-      border-radius: 40px 40px 16px 16px;
-      background: radial-gradient(circle at 30% 10%, #ffe5f6, #ff4da6 55%, #a80056 100%);
-      box-shadow: 0 0 14px rgba(255, 121, 188, 0.7), 0 0 24px rgba(255, 121, 188, 0.5);
-    }
-
-    .tulip-bulb::before,
-    .tulip-bulb::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 24px;
-      border-radius: 60% 60% 0 0;
-      background: radial-gradient(circle at 50% 0, #ffe9fa, #ff6fb5 60%, #b30060 100%);
-      top: -6px;
-    }
-
-    .tulip-bulb::before {
-      left: -2px;
-      transform: rotate(-12deg);
-    }
-
-    .tulip-bulb::after {
-      right: -2px;
-      transform: rotate(12deg);
-    }
-
-    .tulip-text {
-      font-size: 1.2rem;
-      margin-bottom: 14px;
-      max-width: 340px;
-      line-height: 1.5;
-      text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-    }
-
-    .loading-box {
-      width: min(320px, 80vw);
-      border-radius: 14px;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 10px 12px 14px;
-      box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
-    }
-
-    .loading-track {
-      width: 100%;
-      height: 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.25);
-      overflow: hidden;
-      margin-bottom: 6px;
-    }
-
-    .loading-bar {
-      height: 100%;
-      width: 0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #ff4da6, #ff99cc, #ffd6ec);
-      animation: loadingGrow 15s linear forwards;
-    }
-
-    @keyframes loadingGrow {
-      from { width: 0%; }
-      to   { width: 100%; }
-    }
-
-    .loading-text {
-      font-size: 0.95rem;
-      opacity: 0.9;
-    }
-
-    .star {
-      position: absolute;
-      font-size: 1rem;
-      color: #ffe8a3;
-      text-shadow: 0 0 10px #fff8c2, 0 0 18px #ffd15b, 0 0 24px #ff9e2c;
-      pointer-events: none;
-      animation: starFall 4s linear infinite;
-    }
-
-    @keyframes starFall {
-      0%   { transform: translateY(-10vh) scale(0.8); opacity: 0; }
-      10%  { opacity: 1; }
-      100% { transform: translateY(110vh) scale(1); opacity: 0; }
-    }
-
-    #bouquetScene {
-      background:
-        radial-gradient(circle, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9)),
-        url("kirig.jpeg") center/cover no-repeat;
-      background-blend-mode: soft-light;
-    }
-
-    .bouquet {
-      font-size: clamp(4rem, 12vw, 5.5rem);
-      animation: glow 2s infinite alternate;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 20px #fff, 0 0 40px #ff99cc; }
-      to { text-shadow: 0 0 60px #fff, 0 0 100px #ff1a75; }
-    }
-
-    .romantic-text {
-      font-size: 1.3rem;
-      margin: 18px 0;
-      line-height: 1.5;
-      max-width: 480px;
-    }
-
-    .message-wrapper {
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-
-    textarea {
-      width: min(320px, 90vw);
-      height: 90px;
-      border-radius: 15px;
       border: none;
-      padding: 10px;
-      resize: none;
-      font-family: var(--font-main);
-      font-size: 0.95rem;
-      outline: none;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
-    }
-
-    textarea:focus {
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
-    }
-
-    .submit-btn {
-      margin-top: 4px;
-      padding: 8px 20px;
-      border: none;
-      border-radius: 20px;
-      background: #fff;
-      color: var(--accent-1);
       cursor: pointer;
-      font-weight: bold;
-      font-family: var(--font-main);
-      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .submit-btn:hover {
-      background: var(--accent-2);
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      background: linear-gradient(45deg, #ff4da6, #ff99cc);
       color: #fff;
-      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(255, 102, 178, 0.8);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .submit-btn:disabled {
-      opacity: 0.7;
-      cursor: default;
-      transform: none;
+    #playTaylorBtn:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 0 22px rgba(255, 153, 204, 0.9);
     }
 
-    .love-message {
-      margin-top: 10px;
-      font-size: 1rem;
-      max-width: 320px;
-      word-wrap: break-word;
-      min-height: 1.4em;
-    }
-
-    .sparkle {
-      position: absolute;
-      font-size: 1.1rem;
-      animation: sparkleMove 4s linear infinite;
-      pointer-events: none;
-      text-shadow: 0 0 10px #fff;
-    }
-
-    @keyframes sparkleMove {
-      0% { transform: translateY(100vh); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-10vh); opacity: 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-      }
-      .loading-bar {
-        animation-duration: 0.001ms !important;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .buttons {
-        height: 200px;
-      }
-      #yesBtn {
-        padding-inline: 28px;
-      }
+    #status {
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
   </style>
 </head>
 <body>
-  <main aria-live="polite">
-    <h1> HI KAIKAIIII WILL YOU BE MY VALENTINE? HEHEHE💖</h1>
+  <h1>My Taylor Swift Player</h1>
+  <p>Click the button to play / pause your downloaded Taylor Swift song.</p>
 
-    <section class="buttons" aria-label="Valentine answer buttons">
-      <button id="yesBtn" type="button">YES 💕</button>
-      <button id="noBtn" type="button">No 💔</button>
-    </section>
+  <div class="controls">
+    <button id="playTaylorBtn" type="button">Play Taylor 🎵</button>
+    <div id="status">Ready.</div>
 
-    <p id="areYouSureText" class="are-you-sure"></p>
-  </main>
-
-  <!-- Tulip loading scene (15s) -->
-  <section id="tulipScene" class="scene" aria-hidden="true">
-    <div class="tulip-field" aria-hidden="true">
-      <div class="tulip-3d">
-        <div class="tulip-stem"></div>
-        <div class="tulip-leaf"></div>
-        <div class="tulip-leaf right"></div>
-        <div class="tulip-bulb"></div>
-      </div>
-      <div class="tulip-3d">
-        <div class="tulip-stem"></div>
-        <div class="tulip-leaf"></div>
-        <div class="tulip-leaf right"></div>
-        <div class="tulip-bulb"></div>
-      </div>
-      <div class="tulip-3d">
-        <div class="tulip-stem"></div>
-        <div class="tulip-leaf"></div>
-        <div class="tulip-leaf right"></div>
-        <div class="tulip-bulb"></div>
-      </div>
-      <div class="tulip-3d">
-        <div class="tulip-stem"></div>
-        <div class="tulip-leaf"></div>
-        <div class="tulip-leaf right"></div>
-        <div class="tulip-bulb"></div>
-      </div>
-      <div class="tulip-3d">
-        <div class="tulip-stem"></div>
-        <div class="tulip-leaf"></div>
-        <div class="tulip-leaf right"></div>
-        <div class="tulip-bulb"></div>
-      </div>
-    </div>
-
-    <p class="tulip-text">
-      Growing magical tulips just for you... 🌷✨
-    </p>
-
-    <div class="loading-box">
-      <div class="loading-track">
-        <div class="loading-bar" id="tulipLoadingBar"></div>
-      </div>
-      <div class="loading-text" id="tulipLoadingText">
-        Please wait 15 seconds...
-      </div>
-    </div>
-  </section>
-
-  <!-- Final message / bouquet scene -->
-  <section id="bouquetScene" class="scene" aria-hidden="true">
-    <div class="bouquet" aria-hidden="true">💐🌹💖</div>
-    <p class="romantic-text">
-      AARGHHH ILOVEEEEYOUUUUUSOOOMUCHHHH KAIKAIIIIII 💖🌹💞
-    </p>
-
-    <div class="message-wrapper">
-      <label for="loveInput" style="position:absolute;left:-9999px;">Leave a sweet message</label>
-      <textarea
-        id="loveInput"
-        placeholder="Leave a sweet message... 💌"
-        aria-label="Your sweet message"
-      ></textarea>
-      <button class="submit-btn" id="sendBtn" type="button">Send 💖</button>
-
-      <!-- Single-window play/pause button for Lover -->
-      <button class="submit-btn" id="loverBtn" type="button">
-        Play "Lover" 🎵
-      </button>
-
-      <div class="love-message" id="displayMessage" aria-live="polite"></div>
-    </div>
-  </section>
-
-  <!-- Local audio file (put lover.mp3 in same folder as this HTML) -->
-  <audio id="loverAudio" src="lover.mp3"></audio>
-
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <!-- Optional: browser's default audio controls -->
+    <!-- Make sure the src filename matches your downloaded file -->
+    <audio id="taylorSong" src="taylor-song.mp3" controls style="margin-top: 10px; width: 260px;"></audio>
+  </div>
 
   <script>
-    (function () {
-      const EMAILJS_PUBLIC_KEY = "Jsq8y9n9irXxy36f-";
-      const EMAILJS_SERVICE_ID = "service_vi9ffxq";
-      const EMAILJS_TEMPLATE_ID = "template_xzyvp0c";
+    const playTaylorBtn = document.getElementById("playTaylorBtn");
+    const taylorSong = document.getElementById("taylorSong");
+    const statusEl = document.getElementById("status");
 
-      const HEART_EMOJIS = ["💖", "💕", "💘", "💝"];
-      const NO_PHRASES = [
-        "NO WAY!",
-        "BLEH",
-        "HINDI PWEDE ATE HEHE",
-        "TOO SLOW!",
-        "ONE MORE!"
-      ];
-      const YES_MESSAGES = [
-        "ARE YOU SURE?",
-        "REALLY?",
-        "SURE NANI KAIKAI?",
-        "SURE NA SURE NA SURE?",
-        "OKAY LAST SURE NA GUD?",
-        "OKAY LAST NAGUD SURE NA?"
-      ];
+    playTaylorBtn.addEventListener("click", () => {
+      if (!taylorSong) return;
 
-      const noBtn = document.getElementById("noBtn");
-      const yesBtn = document.getElementById("yesBtn");
-      const bouquetScene = document.getElementById("bouquetScene");
-      const tulipScene = document.getElementById("tulipScene");
-      const tulipLoadingText = document.getElementById("tulipLoadingText");
-      const sendBtn = document.getElementById("sendBtn");
-      const loveInput = document.getElementById("loveInput");
-      const display = document.getElementById("displayMessage");
-      const buttonsContainer = document.querySelector(".buttons");
-      const areYouSureText = document.getElementById("areYouSureText");
-      const loverBtn = document.getElementById("loverBtn");
-      const loverAudio = document.getElementById("loverAudio");
-
-      let sparkleIntervalId = null;
-      let floatingHeartIntervalId = null;
-      let starIntervalId = null;
-
-      let yesClickCount = 0;
-      let bouquetShown = false;
-      let tulipShown = false;
-
-      let emailAvailable = false;
-      if (window.emailjs) {
-        try {
-          emailjs.init(EMAILJS_PUBLIC_KEY);
-          emailAvailable = true;
-        } catch (e) {
-          console.error("EmailJS init error:", e);
-        }
-      }
-
-      function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-      }
-
-      function moveNoButton() {
-        if (!buttonsContainer) return;
-        const maxX = buttonsContainer.clientWidth - noBtn.offsetWidth;
-        const maxY = buttonsContainer.clientHeight - noBtn.offsetHeight;
-        if (maxX <= 0 || maxY <= 0) return;
-        const x = randomInRange(0, maxX);
-        const y = randomInRange(0, maxY);
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
-      }
-
-      function showEmojiFar() {
-        const emoji = document.createElement("div");
-        emoji.classList.add("emoji-pop");
-        emoji.textContent = "😛";
-        emoji.style.left = (Math.random() * 50 + 25) + "vw";
-        emoji.style.top = (Math.random() * 50 + 25) + "vh";
-        document.body.appendChild(emoji);
-        setTimeout(() => emoji.remove(), 3000);
-      }
-
-      function showBleehEffect() {
-        const rect = noBtn.getBoundingClientRect();
-        const bleeh = document.createElement("div");
-        bleeh.classList.add("bleeh-word");
-        bleeh.textContent = "BLEEH";
-        bleeh.style.left = rect.left + rect.width / 2 + "px";
-        bleeh.style.top = rect.top + rect.height / 2 + "px";
-        document.body.appendChild(bleeh);
-        setTimeout(() => bleeh.remove(), 800);
-      }
-
-      function createFloatingHeart() {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (Math.random() * 25 + 20) + "px";
-        heart.style.animationDuration = (Math.random() * 6 + 6) + "s";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 10000);
-      }
-
-      function startFloatingHearts() {
-        if (floatingHeartIntervalId !== null) return;
-        floatingHeartIntervalId = setInterval(createFloatingHeart, 300);
-      }
-
-      function startSparkles() {
-        if (sparkleIntervalId !== null) return;
-        sparkleIntervalId = setInterval(() => {
-          const sparkle = document.createElement("div");
-          sparkle.classList.add("sparkle");
-          sparkle.textContent = "✨";
-          sparkle.style.left = Math.random() * 100 + "vw";
-          document.body.appendChild(sparkle);
-          setTimeout(() => sparkle.remove(), 4000);
-        }, 300);
-      }
-
-      function startHeartRainStaggered() {
-        const totalHearts = 20;
-        for (let i = 0; i < totalHearts; i++) {
-          setTimeout(() => {
-            const heart = document.createElement("div");
-            heart.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
-            heart.style.position = "fixed";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.top = "-80px";
-            heart.style.fontSize = (Math.random() * 50 + 50) + "px";
-            heart.style.opacity = 0.8;
-            heart.style.textShadow = "0 0 30px #ff66b2, 0 0 60px #ff99cc";
-            heart.style.pointerEvents = "none";
-            document.body.appendChild(heart);
-            const duration = 5000;
-            heart.animate(
-              [{ transform: "translateY(0px)" }, { transform: "translateY(100vh)" }],
-              { duration, iterations: 1, easing: "ease-out" }
-            );
-            setTimeout(() => heart.remove(), duration);
-          }, i * 200);
-        }
-      }
-
-      function createStar() {
-        const star = document.createElement("div");
-        star.classList.add("star");
-        star.textContent = Math.random() < 0.4 ? "✨" : "⭐";
-        star.style.left = Math.random() * 100 + "vw";
-        star.style.top = "-10vh";
-        star.style.animationDuration = (Math.random() * 3 + 3) + "s";
-        tulipScene.appendChild(star);
-        setTimeout(() => star.remove(), 6000);
-      }
-
-      function startStarRain() {
-        if (starIntervalId !== null) return;
-        starIntervalId = setInterval(createStar, 250);
-      }
-
-      function stopStarRain() {
-        if (starIntervalId !== null) {
-          clearInterval(starIntervalId);
-          starIntervalId = null;
-        }
-      }
-
-      function showBouquetScene() {
-        if (bouquetShown) return;
-        bouquetShown = true;
-        stopStarRain();
-        tulipScene.classList.remove("active");
-        tulipScene.setAttribute("aria-hidden", "true");
-        bouquetScene.classList.add("active");
-        bouquetScene.setAttribute("aria-hidden", "false");
-        startSparkles();
-        startFloatingHearts();
-        startHeartRainStaggered();
-      }
-
-      function showTulipScene() {
-        if (tulipShown) return;
-        tulipShown = true;
-        tulipScene.classList.add("active");
-        tulipScene.setAttribute("aria-hidden", "false");
-        startStarRain();
-        let remaining = 15;
-        tulipLoadingText.textContent = "Please wait 15 seconds...";
-        const countdown = setInterval(() => {
-          remaining--;
-          if (remaining <= 0) {
-            clearInterval(countdown);
-          } else {
-            tulipLoadingText.textContent = "Please wait " + remaining + " seconds...";
-          }
-        }, 1000);
-        setTimeout(showBouquetScene, 15000);
-      }
-
-      noBtn.addEventListener("mouseenter", () => {
-        const phrase = NO_PHRASES[Math.floor(Math.random() * NO_PHRASES.length)];
-        noBtn.textContent = phrase;
-        moveNoButton();
-        showEmojiFar();
-        showBleehEffect();
-      });
-
-      window.addEventListener("load", moveNoButton);
-
-      yesBtn.addEventListener("click", () => {
-        yesClickCount++;
-        if (yesClickCount <= YES_MESSAGES.length) {
-          areYouSureText.textContent = YES_MESSAGES[yesClickCount - 1];
-        } else {
-          areYouSureText.textContent = YES_MESSAGES[YES_MESSAGES.length - 1];
-        }
-        areYouSureText.style.opacity = "1";
-        const scale = 1 + yesClickCount * 0.15;
-        yesBtn.style.transform = "scale(" + scale + ")";
-        yesBtn.style.padding = (18 + yesClickCount * 2) + "px " + (40 + yesClickCount * 4) + "px";
-        yesBtn.style.fontSize = (1.1 + yesClickCount * 0.07) + "rem";
-        if (yesClickCount >= 7 && !tulipShown) {
-          showTulipScene();
-        }
-      });
-
-      // Play/Pause Lover button
-      if (loverBtn && loverAudio) {
-        loverBtn.addEventListener("click", () => {
-          if (loverAudio.paused) {
-            loverAudio.play().then(() => {
-              loverBtn.textContent = 'Pause "Lover" ⏸️';
-            }).catch(err => {
-              console.warn("Audio play blocked:", err);
-            });
-          } else {
-            loverAudio.pause();
-            loverBtn.textContent = 'Play "Lover" 🎵';
-          }
+      if (taylorSong.paused) {
+        taylorSong.play().then(() => {
+          playTaylorBtn.textContent = "Pause Taylor ⏸️";
+          statusEl.textContent = "Playing...";
+        }).catch(err => {
+          console.warn("Audio play blocked:", err);
+          statusEl.textContent = "Could not start playback (browser blocked it).";
         });
-
-        loverAudio.addEventListener("ended", () => {
-          loverBtn.textContent = 'Play "Lover" 🎵';
-        });
+      } else {
+        taylorSong.pause();
+        playTaylorBtn.textContent = "Play Taylor 🎵";
+        statusEl.textContent = "Paused.";
       }
+    });
 
-      sendBtn.addEventListener("click", () => {
-        const input = loveInput.value.trim();
-        if (!input) {
-          display.textContent = "❌ Please type a message!";
-          return;
-        }
-        if (!emailAvailable) {
-          display.textContent = "❌ Email service not available. Check your EmailJS setup.";
-          return;
-        }
-        sendBtn.disabled = true;
-        display.textContent = "📨 Sending...";
-        const templateParams = { mahiwagangmensahe: input };
-        emailjs
-          .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-          .then(
-            () => {
-              display.textContent = "💌 Message sent! 💖";
-              sendBtn.disabled = false;
-              loveInput.value = "";
-            },
-            (error) => {
-              console.error("EmailJS Error:", error);
-              display.textContent = "❌ Failed to send! Check service/template/key in EmailJS.";
-              sendBtn.disabled = false;
-            }
-          );
-      });
-    })();
+    taylorSong.addEventListener("ended", () => {
+      playTaylorBtn.textContent = "Play Taylor 🎵";
+      statusEl.textContent = "Finished.";
+    });
   </script>
 </body>
 </html>
